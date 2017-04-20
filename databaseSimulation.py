@@ -14,6 +14,7 @@ Scenario:
 import random
 import simpy
 
+#test
 RANDOM_SEED = 42
 NEW_CUSTOMERS = 5  # Total number of customers
 INTERVAL_CUSTOMERS = 10.0  # Generate new customers roughly every x seconds

@@ -18,6 +18,7 @@ import simpy
 RANDOM_SEED = 42
 
 # Constants defined for database transaction simulation
+INTERVAL_TRANSACTION = 0.0001             # Generate new transactions roughly every x seconds
 NUM_READ_REQUESTS = 2000                # Number of read requests
 NUM_WRITE_REQUESTS = 50                 # Number of write requests
 SIM_TIME = 50000                        # Simulation time in minutes
@@ -26,11 +27,13 @@ LONGEST_READ = 5
 LONGEST_WRITE = 10
 ROLLBACK_TIME = 3
 
-def source(env, number, readCounter, writeCounter):
+def source(env, number, interval, readCounter, writeCounter):
     """Source generates write transactions randomly"""
     for i in range(number):
         c = invalidDirtyWrite(env, 'WriteTransaction%02d' % i, readCounter, writeCounter)
         env.process(c)
+        t = random.expovariate(1.0 / interval)
+        yield env.timeout(t)
 
 def invalidDirtyWrite(env, name, readCounter, writeCounter):
     """Write transaction in one of data blocks, check by time stamp"""
@@ -68,6 +71,6 @@ env = simpy.Environment()
 # Start both read and write processes, and run
 readCounter = simpy.Resource(env, capacity=1000000000)
 writeCounter = simpy.Resource(env, capacity=1000)
-env.process(source(env, NUM_WRITE_REQUESTS, readCounter, writeCounter))
+env.process(source(env, NUM_WRITE_REQUESTS, INTERVAL_TRANSACTION, readCounter, writeCounter))
 env.run()
 #env.run(until = 100) #total simulation time is set to 100 time unit

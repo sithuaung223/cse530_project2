@@ -16,61 +16,49 @@ import simpy
 
 #test
 RANDOM_SEED = 42
-NEW_CUSTOMERS = 5  # Total number of customers
-INTERVAL_CUSTOMERS = 10.0  # Generate new customers roughly every x seconds
-MIN_PATIENCE = 1  # Min. customer patience
-MAX_PATIENCE = 3  # Max. customer patience
 
 # Constants defined for database transaction simulation
-NUM_READ_REQUESTS = 2000             # Number of machines in the carwash
-NUM_WRITE_REQUESTS = 50            # Minutes it takes to clean a car
-T_INTER = 7                         # Create a car every ~7 minutes
-SIM_TIME = 50000                    # Simulation time in minutes
-NUM_DATA_BLOCKS = 100                # number of data blocks
+NUM_READ_REQUESTS = 2000                # Number of read requests
+NUM_WRITE_REQUESTS = 50                 # Number of write requests
+SIM_TIME = 50000                        # Simulation time in minutes
+NUM_DATA_BLOCKS = 100                   # number of data blocks
 LONGEST_READ = 5
 LONGEST_WRITE = 10
+ROLLBACK_TIME = 3
 
-def source(env, number, interval, readCounter, writeCounter):
-    """Source generates customers randomly"""
+def source(env, number, readCounter, writeCounter):
+    """Source generates write transactions randomly"""
     for i in range(number):
-        c = customer(env, 'Customer%02d' % i, readCounter, time_in_bank=12.0)
+        c = invalidDirtyWrite(env, 'WriteTransaction%02d' % i, readCounter, writeCounter)
         env.process(c)
-        t = random.expovariate(1.0 / interval)
-        yield env.timeout(t)
 
+def invalidDirtyWrite(env, name, readCounter, writeCounter):
+    """Write transaction in one of data blocks, check by time stamp"""
+    start = env.now
+    last_read_write_time = 0
+    print('%7.4f %s: Here I am writing the request' % (start, name))
 
-def customer(env, name, readCounter, time_in_bank):
-    """Customer arrives, is served and leaves."""
-    arrive = env.now
-    print('%7.4f %s: Here I am' % (arrive, name))
+    with writeCounter.request() as req:
+        # time takes to write the request, varies
+        patience = random.uniform(0, LONGEST_WRITE)
+        # write the request
+        yield env.timeout(patience)
+        # total time taken to write the request
+        end = env.now - start
 
-    with readCounter.request() as req:
-        patience = random.uniform(MIN_PATIENCE, MAX_PATIENCE)
-        # Wait for the readCounter or abort at the end of our tether
-        results = yield req | env.timeout(patience)
-
-        wait = env.now - arrive
-
-        if req in results:
-            # We got to the readCounter
-            print('%7.4f %s: Waited %6.3f' % (env.now, name, wait))
-
-            tib = random.expovariate(1.0 / time_in_bank)
-            yield env.timeout(tib)
-            print('%7.4f %s: Finished' % (env.now, name))
-
-        else:
-            # We reneged
-            print('%7.4f %s: RENEGED after %6.3f' % (env.now, name, wait))
-
-def simulateDataBase(env, number, interval, readCounter):
-    """simulateDataBase generates database transaction randomly"""
-    for i in range(number):
-        c = customer(env, 'Customer%02d' % i, readCounter, time_in_bank=12.0)
-        env.process(c)
-        t = random.expovariate(1.0 / interval)
-        yield env.timeout(t)
-
+        if last_read_write_time > start:
+        # re-attempt the write transaction
+            print('the write is invalidated, reattempting')
+            # rollback the transaction, start the transaction again
+            start = env.now
+            yield env.timeout(ROLLBACK_TIME)
+            print('%7.4f %s: Here I am re-writing the request' % (start, name))
+            # time takes to write the request, varies
+            patience = random.uniform(0, LONGEST_WRITE)
+            # write the request
+            yield env.timeout(patience)
+            # total time taken to write the request
+            end = env.now - start
 
 # Setup and start the database transaction simulation
 print('DataBase Transaction')
@@ -80,5 +68,6 @@ env = simpy.Environment()
 # Start both read and write processes, and run
 readCounter = simpy.Resource(env, capacity=1000000000)
 writeCounter = simpy.Resource(env, capacity=1000)
-env.process(source(env, NEW_CUSTOMERS, INTERVAL_CUSTOMERS, readCounter, writeCounter))
+env.process(source(env, NUM_WRITE_REQUESTS, readCounter, writeCounter))
 env.run()
+#env.run(until = 100) #total simulation time is set to 100 time unit

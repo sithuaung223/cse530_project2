@@ -1,0 +1,119 @@
+RESULT of LabB
+
+➜  cse530_project2 git:(master) ✗ python databaseSimulation.py
+DataBase Transaction
+ 0.0000 WriteTransaction00: Here I am writing the request
+ 0.0000 ReadTransaction00: Here I am reading the request
+10.2006 WriteTransaction01: Here I am writing the request
+10.2006 ReadTransaction01: Here I am reading the request
+11.1101 WriteTransaction02: Here I am writing the request
+11.1101 ReadTransaction02: Here I am reading the request
+the write is invalidated, reattempting
+11.4664 WriteTransaction01: Here I am re-writing the request
+13.5773 WriteTransaction03: Here I am writing the request
+13.5773 ReadTransaction03: Here I am reading the request
+16.0676 WriteTransaction04: Here I am writing the request
+16.0676 ReadTransaction04: Here I am reading the request
+30.2892 WriteTransaction05: Here I am writing the request
+30.2892 ReadTransaction05: Here I am reading the request
+31.1099 WriteTransaction06: Here I am writing the request
+31.1099 ReadTransaction06: Here I am reading the request
+31.5790 WriteTransaction07: Here I am writing the request
+31.5790 ReadTransaction07: Here I am reading the request
+34.8359 WriteTransaction08: Here I am writing the request
+34.8359 ReadTransaction08: Here I am reading the request
+37.1869 WriteTransaction09: Here I am writing the request
+37.1869 ReadTransaction09: Here I am reading the request
+41.9585 WriteTransaction10: Here I am writing the request
+41.9585 ReadTransaction10: Here I am reading the request
+62.8629 WriteTransaction11: Here I am writing the request
+62.8629 ReadTransaction11: Here I am reading the request
+63.0596 WriteTransaction12: Here I am writing the request
+63.0596 ReadTransaction12: Here I am reading the request
+80.8777 WriteTransaction13: Here I am writing the request
+80.8777 ReadTransaction13: Here I am reading the request
+88.5625 WriteTransaction14: Here I am writing the request
+88.5625 ReadTransaction14: Here I am reading the request
+97.2180 WriteTransaction15: Here I am writing the request
+97.2180 ReadTransaction15: Here I am reading the request
+108.3560 WriteTransaction16: Here I am writing the request
+108.3560 ReadTransaction16: Here I am reading the request
+121.8742 WriteTransaction17: Here I am writing the request
+121.8742 ReadTransaction17: Here I am reading the request
+127.6082 WriteTransaction18: Here I am writing the request
+127.6082 ReadTransaction18: Here I am reading the request
+136.9390 WriteTransaction19: Here I am writing the request
+136.9390 ReadTransaction19: Here I am reading the request
+146.4234 WriteTransaction20: Here I am writing the request
+146.4234 ReadTransaction20: Here I am reading the request
+162.5112 WriteTransaction21: Here I am writing the request
+162.5112 ReadTransaction21: Here I am reading the request
+172.0800 WriteTransaction22: Here I am writing the request
+172.0800 ReadTransaction22: Here I am reading the request
+173.3533 WriteTransaction23: Here I am writing the request
+173.3533 ReadTransaction23: Here I am reading the request
+176.5898 WriteTransaction24: Here I am writing the request
+176.5898 ReadTransaction24: Here I am reading the request
+184.6498 WriteTransaction25: Here I am writing the request
+184.6498 ReadTransaction25: Here I am reading the request
+190.1861 WriteTransaction26: Here I am writing the request
+190.1861 ReadTransaction26: Here I am reading the request
+196.5443 WriteTransaction27: Here I am writing the request
+196.5443 ReadTransaction27: Here I am reading the request
+212.6045 WriteTransaction28: Here I am writing the request
+212.6045 ReadTransaction28: Here I am reading the request
+218.7584 WriteTransaction29: Here I am writing the request
+218.7584 ReadTransaction29: Here I am reading the request
+220.1758 WriteTransaction30: Here I am writing the request
+220.1758 ReadTransaction30: Here I am reading the request
+254.4054 WriteTransaction31: Here I am writing the request
+254.4054 ReadTransaction31: Here I am reading the request
+255.3280 WriteTransaction32: Here I am writing the request
+255.3280 ReadTransaction32: Here I am reading the request
+259.6527 WriteTransaction33: Here I am writing the request
+259.6527 ReadTransaction33: Here I am reading the request
+265.8649 WriteTransaction34: Here I am writing the request
+265.8649 ReadTransaction34: Here I am reading the request
+the write is invalidated, reattempting
+267.8753 WriteTransaction34: Here I am re-writing the request
+282.6413 WriteTransaction35: Here I am writing the request
+282.6413 ReadTransaction35: Here I am reading the request
+283.2931 WriteTransaction36: Here I am writing the request
+283.2931 ReadTransaction36: Here I am reading the request
+286.7666 WriteTransaction37: Here I am writing the request
+286.7666 ReadTransaction37: Here I am reading the request
+287.6011 WriteTransaction38: Here I am writing the request
+287.6011 ReadTransaction38: Here I am reading the request
+297.1424 WriteTransaction39: Here I am writing the request
+297.1424 ReadTransaction39: Here I am reading the request
+314.9441 WriteTransaction40: Here I am writing the request
+314.9441 ReadTransaction40: Here I am reading the request
+322.8467 WriteTransaction41: Here I am writing the request
+322.8467 ReadTransaction41: Here I am reading the request
+326.1953 WriteTransaction42: Here I am writing the request
+326.1953 ReadTransaction42: Here I am reading the request
+329.8598 WriteTransaction43: Here I am writing the request
+329.8598 ReadTransaction43: Here I am reading the request
+352.7752 WriteTransaction44: Here I am writing the request
+352.7752 ReadTransaction44: Here I am reading the request
+375.2933 WriteTransaction45: Here I am writing the request
+375.2933 ReadTransaction45: Here I am reading the request
+393.9700 WriteTransaction46: Here I am writing the request
+393.9700 ReadTransaction46: Here I am reading the request
+407.0637 WriteTransaction47: Here I am writing the request
+407.0637 ReadTransaction47: Here I am reading the request
+443.0210 WriteTransaction48: Here I am writing the request
+443.0210 ReadTransaction48: Here I am reading the request
+450.0555 WriteTransaction49: Here I am writing the request
+450.0555 ReadTransaction49: Here I am reading the request
+total write number: 48, invalid write number: 2. The percent of invalid write is 4.167 %.
+________________________________________________________________________________---
+
+We used most of the carwash example to implement LabB.
+
+For Readrequest and Writerequest and to identify what time the read and write request committed the transaction, we used the timestamp from time method of Python: 
+
+Invalid Write Data:
+	To reduce the invalid data below 5 percent, we reduced the number of blocks from varied 300 to 50. We tested with different number of blocks in multiple runs and came to the conclusion 50 is the number of blocks where we receive below 5%.
+
+	

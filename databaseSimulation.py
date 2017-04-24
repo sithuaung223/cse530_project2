@@ -23,7 +23,7 @@ INTERVAL_TRANSACTION = 10             # Generate new transactions roughly every 
 NUM_READ_REQUESTS = 100               # Number of read requests
 NUM_WRITE_REQUESTS = 10                # Number of write requests
 SIM_TIME = 50000                        # Simulation time in minutes
-NUM_DATA_BLOCKS = 100                   # number of data blocks
+NUM_DATA_BLOCKS = 50                   # number of data blocks
 datablockStates = [ ]   # Keeps track of the locks on the 100 different datablocks
 LONGEST_READ = 1
 LONGEST_WRITE = 3
@@ -34,7 +34,7 @@ invalidwritenum = 0
 
 def source(env, writeNumber, readNumber, interval, readCounter, writeCounter):
     """Source generates write transactions randomly"""
-    for i in range(readNumber):
+    for i in range(NUM_DATA_BLOCKS):
         c1 = invalidDirtyWrite(env, 'WriteTransaction%02d' % i, writeCounter, readCounter)
         c2 = read(env, 'ReadTransaction%02d' % i, readCounter)
         env.process(c1)

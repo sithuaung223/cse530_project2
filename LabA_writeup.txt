@@ -1,0 +1,74 @@
+RESULT of LabA
+
+Typical Read/Write
+0.00 Reader0: Request 
+0.00 Reader1: Request 
+0.00 Reader2: Request 
+0.00 Reader3: Request 
+0.00 Writer4: Request 
+0.00 Reader0: Start 
+2.00 Reader0: Finish 
+2.00 Writer4: Start 
+4.00 Reader5: Request 
+6.00 Reader6: Request 
+6.00 Writer4: Finish 
+6.00 Reader1: Start 
+8.00 Reader1: Finish 
+8.00 Reader2: Start 
+10.00 Reader7: Request 
+10.00 Reader3: Starving.... 
+10.00 Reader3: Start:Waited 10.00 ...
+10.00 Reader2: Finish 
+12.00 Reader3: Finish 
+12.00 Reader5: Start 
+14.00 Reader5: Finish 
+14.00 Reader6: Start 
+15.00 Writer8: Request 
+16.00 Reader6: Finish 
+16.00 Writer8: Start 
+18.00 Reader9: Request 
+20.00 Reader10: Request 
+20.00 Reader7: Starving.... 
+20.00 Reader7: Start:Waited 10.00 ...
+20.00 Writer8: Finish 
+21.00 Writer11: Request 
+22.00 Reader7: Finish 
+22.00 Writer11: Start 
+25.00 Reader12: Request 
+26.00 Writer11: Finish 
+26.00 Reader9: Start 
+27.00 Reader13: Request 
+28.00 Reader9: Finish 
+28.00 Reader10: Start 
+30.00 Reader10: Finish 
+30.00 Reader12: Start 
+32.00 Writer14: Request 
+32.00 Reader12: Finish 
+32.00 Writer14: Start 
+36.00 Writer14: Finish 
+36.00 Reader13: Start 
+37.00 Reader15: Request 
+38.00 Reader13: Finish 
+38.00 Reader15: Start 
+39.00 Writer16: Request 
+40.00 Reader15: Finish 
+40.00 Writer16: Start 
+44.00 Reader17: Request 
+44.00 Writer16: Finish 
+44.00 Reader17: Start 
+45.00 Writer18: Request 
+46.00 Reader17: Finish 
+46.00 Writer18: Start 
+________________________________________________________________________________---
+
+We used most of the carwash example to implement LabA.
+
+For Readrequest and Writerequest: 
+	we used write_lock to differentiate the turn for reader or writer
+
+Starvation:
+	we used PriorityResource and some code from bank Renge to avoid starvation
+	we always prioritize write over reader.So,if reader has to wait long more than 10 ms, program alert starvation and move up the priority of that reader.
+	In our results, there are two avoid of starvations. Reader3 and Reader7. They have waited for more than 10 sec after they request. So, we move up their rank.so there is no starvation
+
+	
